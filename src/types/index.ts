@@ -26,6 +26,13 @@ export interface CricketMatch {
   matchEnded?: boolean;
   result?: string; // e.g., "India won by 5 wickets", "Australia won by 42 runs"
   matchTime?: string; // e.g., "2:30 PM", "Today 3:00 PM", "Tomorrow 10:00 AM"
+  prediction?: Prediction;
+}
+
+export interface Prediction {
+  winner: string;
+  probability: number;
+  reasoning: string;
 }
 
 export interface CricketApiResponse {

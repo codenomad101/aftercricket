@@ -31,6 +31,8 @@ export default function Navbar() {
     { href: '/rankings', label: 'Rankings' },
   ];
 
+
+
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -52,56 +54,55 @@ export default function Navbar() {
   }, [newsDropdownOpen, statsDropdownOpen]);
 
   const secondaryMenuItems = [
+    { href: '/ipl-2026', label: 'IPL 2026' },
     { href: '/live-scores', label: 'Live Scores' },
-    { href: '/ipl-2025', label: 'IPL 2025' },
     { href: '/match-predictions', label: 'Match Predictions' },
     { href: '/fantasy-tips', label: 'Fantasy Tips' },
-    { href: '/interviews', label: 'Interviews' },
     { href: '/web-stories', label: 'Web Stories' },
-    { href: '/videos', label: 'Videos' },
     { href: '/series', label: 'Series' },
     { href: '/schedule', label: 'Schedule' },
     { href: '/poll', label: 'Poll' },
-    { href: '/northern', label: 'Northern' },
   ];
 
   return (
-    <header className="bg-red-600 text-white shadow-xl sticky top-0 z-50">
+    <header className="bg-gradient-to-r from-red-600 via-red-700 to-red-600 text-white shadow-2xl sticky top-0 z-50">
       {/* Main Navigation */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link 
-            href="/" 
-            className="flex flex-col hover:opacity-90 transition-all duration-300 transform hover:scale-105"
+          <Link
+            href="/"
+            className="flex flex-col hover:opacity-90 transition-all duration-300 transform hover:scale-105 relative group"
           >
-            <span className="text-4xl font-black font-papyrus italic">AfterCricket</span>
+            <span className="text-4xl font-black font-papyrus text-white drop-shadow-lg">AfterCricket</span>
+            <div className="absolute -bottom-1 left-0 w-0 h-1 bg-white transition-all duration-300 group-hover:w-full rounded-full"></div>
           </Link>
-          
+
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-6 items-center">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
-                  pathname === link.href
-                    ? 'bg-white text-red-600 shadow-lg'
-                    : 'hover:bg-red-700 hover:text-white'
-                }`}
+                className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 relative group ${pathname === link.href
+                  ? 'bg-white text-red-800 shadow-lg font-bold'
+                  : 'hover:bg-red-700 hover:text-white'
+                  }`}
               >
                 {link.label}
+                {pathname !== link.href && (
+                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></div>
+                )}
               </Link>
             ))}
-            
+
             {/* News Dropdown */}
             <div className="relative" ref={newsDropdownRef}>
               <button
                 onClick={() => setNewsDropdownOpen(!newsDropdownOpen)}
-                className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center ${
-                  pathname === '/articles' || pathname.startsWith('/articles')
-                    ? 'bg-white text-red-600 shadow-lg'
-                    : 'hover:bg-red-700 hover:text-white'
-                }`}
+                className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center relative group ${pathname === '/articles' || pathname.startsWith('/articles')
+                  ? 'bg-white text-red-800 shadow-lg font-bold'
+                  : 'hover:bg-red-700 hover:text-white'
+                  }`}
               >
                 News
                 <svg
@@ -116,7 +117,7 @@ export default function Navbar() {
                   <path d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              
+
               {newsDropdownOpen && (
                 <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-50 border border-gray-200">
                   {newsLinks.map((link) => (
@@ -124,11 +125,10 @@ export default function Navbar() {
                       key={link.href}
                       href={link.href}
                       onClick={() => setNewsDropdownOpen(false)}
-                      className={`block px-4 py-2 text-sm transition-colors first:rounded-t-lg last:rounded-b-lg ${
-                        pathname === link.href || (pathname === '/articles' && link.href === '/articles')
-                          ? 'bg-red-600 text-white'
-                          : 'text-gray-700 hover:bg-red-50 hover:text-red-600'
-                      }`}
+                      className={`block px-4 py-2 text-sm transition-colors first:rounded-t-lg last:rounded-b-lg ${pathname === link.href || (pathname === '/articles' && link.href === '/articles')
+                        ? 'bg-red-600 text-white'
+                        : 'text-gray-700 hover:bg-red-50 hover:text-red-600'
+                        }`}
                     >
                       {link.label}
                     </Link>
@@ -136,16 +136,15 @@ export default function Navbar() {
                 </div>
               )}
             </div>
-            
+
             {/* Stats Dropdown */}
             <div className="relative" ref={statsDropdownRef}>
               <button
                 onClick={() => setStatsDropdownOpen(!statsDropdownOpen)}
-                className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center ${
-                  pathname.startsWith('/stats') || pathname.startsWith('/teams') || pathname.startsWith('/rankings')
-                    ? 'bg-white text-red-600 shadow-lg'
-                    : 'hover:bg-red-700 hover:text-white'
-                }`}
+                className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center relative group ${pathname.startsWith('/stats') || pathname.startsWith('/teams') || pathname.startsWith('/rankings')
+                  ? 'bg-white text-red-800 shadow-lg font-bold'
+                  : 'hover:bg-red-700 hover:text-white'
+                  }`}
               >
                 Stats
                 <svg
@@ -160,7 +159,7 @@ export default function Navbar() {
                   <path d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              
+
               {statsDropdownOpen && (
                 <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-50 border border-gray-200">
                   {statsLinks.map((link) => (
@@ -168,11 +167,10 @@ export default function Navbar() {
                       key={link.href}
                       href={link.href}
                       onClick={() => setStatsDropdownOpen(false)}
-                      className={`block px-4 py-2 text-sm transition-colors first:rounded-t-lg last:rounded-b-lg ${
-                        pathname === link.href
-                          ? 'bg-red-600 text-white'
-                          : 'text-gray-700 hover:bg-red-50 hover:text-red-600'
-                      }`}
+                      className={`block px-4 py-2 text-sm transition-colors first:rounded-t-lg last:rounded-b-lg ${pathname === link.href
+                        ? 'bg-red-600 text-white'
+                        : 'text-gray-700 hover:bg-red-50 hover:text-red-600'
+                        }`}
                     >
                       {link.label}
                     </Link>
@@ -214,25 +212,23 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
-                  pathname === link.href
-                    ? 'bg-white text-red-600'
-                    : 'hover:bg-red-700 hover:text-white'
-                }`}
+                className={`block px-4 py-2 rounded-lg font-medium transition-all duration-300 ${pathname === link.href
+                  ? 'bg-white text-red-600'
+                  : 'hover:bg-red-700 hover:text-white'
+                  }`}
               >
                 {link.label}
               </Link>
             ))}
-            
+
             {/* Mobile News Dropdown */}
             <div>
               <button
                 onClick={() => setMobileNewsDropdownOpen(!mobileNewsDropdownOpen)}
-                className={`w-full text-left px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center justify-between ${
-                  pathname === '/articles' || pathname.startsWith('/articles')
-                    ? 'bg-white text-red-600'
-                    : 'hover:bg-red-700 hover:text-white'
-                }`}
+                className={`w-full text-left px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center justify-between ${pathname === '/articles' || pathname.startsWith('/articles')
+                  ? 'bg-white text-red-600'
+                  : 'hover:bg-red-700 hover:text-white'
+                  }`}
               >
                 News
                 <svg
@@ -247,7 +243,7 @@ export default function Navbar() {
                   <path d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              
+
               {mobileNewsDropdownOpen && (
                 <div className="ml-4 mt-2 space-y-1">
                   {newsLinks.map((link) => (
@@ -258,11 +254,10 @@ export default function Navbar() {
                         setMobileMenuOpen(false);
                         setMobileNewsDropdownOpen(false);
                       }}
-                      className={`block px-4 py-2 rounded-lg text-sm transition-all duration-300 ${
-                        pathname === link.href || (pathname === '/articles' && link.href === '/articles')
-                          ? 'bg-white text-red-600'
-                          : 'hover:bg-red-700 hover:text-white'
-                      }`}
+                      className={`block px-4 py-2 rounded-lg text-sm transition-all duration-300 ${pathname === link.href || (pathname === '/articles' && link.href === '/articles')
+                        ? 'bg-white text-red-600'
+                        : 'hover:bg-red-700 hover:text-white'
+                        }`}
                     >
                       {link.label}
                     </Link>
@@ -270,16 +265,15 @@ export default function Navbar() {
                 </div>
               )}
             </div>
-            
+
             {/* Mobile Stats Dropdown */}
             <div>
               <button
                 onClick={() => setMobileStatsDropdownOpen(!mobileStatsDropdownOpen)}
-                className={`w-full text-left px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center justify-between ${
-                  pathname.startsWith('/stats') || pathname.startsWith('/teams') || pathname.startsWith('/rankings')
-                    ? 'bg-white text-red-600'
-                    : 'hover:bg-red-700 hover:text-white'
-                }`}
+                className={`w-full text-left px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center justify-between ${pathname.startsWith('/stats') || pathname.startsWith('/teams') || pathname.startsWith('/rankings')
+                  ? 'bg-white text-red-600'
+                  : 'hover:bg-red-700 hover:text-white'
+                  }`}
               >
                 Stats
                 <svg
@@ -294,7 +288,7 @@ export default function Navbar() {
                   <path d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              
+
               {mobileStatsDropdownOpen && (
                 <div className="ml-4 mt-2 space-y-1">
                   {statsLinks.map((link) => (
@@ -305,11 +299,10 @@ export default function Navbar() {
                         setMobileMenuOpen(false);
                         setMobileStatsDropdownOpen(false);
                       }}
-                      className={`block px-4 py-2 rounded-lg text-sm transition-all duration-300 ${
-                        pathname === link.href
-                          ? 'bg-white text-red-600'
-                          : 'hover:bg-red-700 hover:text-white'
-                      }`}
+                      className={`block px-4 py-2 rounded-lg text-sm transition-all duration-300 ${pathname === link.href
+                        ? 'bg-white text-red-600'
+                        : 'hover:bg-red-700 hover:text-white'
+                        }`}
                     >
                       {link.label}
                     </Link>
@@ -320,38 +313,39 @@ export default function Navbar() {
           </nav>
         )}
       </div>
-      
+
       {/* Secondary Menu */}
-      <div className="bg-red-100 border-t border-red-200">
+      <div className="bg-gradient-to-r from-red-500 via-red-600 to-red-500 border-t border-red-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="hidden md:flex items-center space-x-1 overflow-x-auto scrollbar-hide py-2">
+          <nav className="hidden md:flex items-center justify-center space-x-1 overflow-x-auto scrollbar-hide py-2">
+            {/* All secondary menu items */}
             {secondaryMenuItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-3 py-1 text-xs font-medium whitespace-nowrap transition-colors ${
-                  pathname === item.href
-                    ? 'text-red-700 font-semibold'
-                    : 'text-red-600 hover:text-red-700 hover:bg-red-200'
-                }`}
+                className={`px-3 py-1 text-xs font-medium whitespace-nowrap transition-colors rounded ${pathname === item.href
+                  ? 'bg-white text-red-800 font-bold shadow'
+                  : 'text-white hover:text-gray-200 hover:bg-red-700'
+                  }`}
               >
                 {item.label}
               </Link>
             ))}
           </nav>
-          
+
+
           {/* Mobile Secondary Menu */}
           <nav className="md:hidden flex items-center space-x-1 overflow-x-auto scrollbar-hide py-2 px-2">
+            {/* All secondary menu items */}
             {secondaryMenuItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`px-2 py-1 text-xs font-medium whitespace-nowrap transition-colors ${
-                  pathname === item.href
-                    ? 'text-red-700 font-semibold'
-                    : 'text-red-600 hover:text-red-700'
-                }`}
+                className={`px-2 py-1 text-xs font-medium whitespace-nowrap transition-colors ${pathname === item.href
+                  ? 'text-red-700 font-semibold'
+                  : 'text-red-600 hover:text-red-700'
+                  }`}
               >
                 {item.label}
               </Link>
