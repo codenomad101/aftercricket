@@ -14,22 +14,44 @@ export default function MatchCard({ match }: MatchCardProps) {
   
   return (
     <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-3 min-w-[240px] flex-shrink-0 border border-gray-200">
+      {/* Time at Top */}
+      {match.matchTime && (
+        <div className="mb-2">
+          <p className="text-[10px] text-gray-600 flex items-center">
+            <span className="mr-1">🕐</span>
+            <span>
+              {match.matchTime.includes('•') 
+                ? match.matchTime.split('•').map(s => s.trim()).join(' • ') // Format: "Today • 5:30 PM"
+                : match.matchTime}
+            </span>
+          </p>
+        </div>
+      )}
+      
       {/* Status Badge */}
       <div className="flex justify-between items-center mb-2">
-        <span
-          className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-            isLive
-              ? 'bg-red-500 text-white animate-pulse'
-              : isCompleted
-              ? 'bg-green-500 text-white'
-              : 'bg-yellow-500 text-white'
-          }`}
-        >
-          {match.status || 'Upcoming'}
-        </span>
-        <span className="text-[10px] text-gray-600">
-          {format(new Date(match.date), 'MMM dd')}
-        </span>
+        <div className="flex items-center gap-1.5">
+          <span
+            className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+              isLive
+                ? 'bg-red-500 text-white animate-pulse'
+                : isCompleted
+                ? 'bg-green-500 text-white'
+                : 'bg-yellow-500 text-white'
+            }`}
+          >
+            {match.status || 'Upcoming'}
+          </span>
+        </div>
+        {!match.matchTime && (
+          <span className="text-[10px] text-gray-600">
+            {match.status?.toLowerCase().includes('today') 
+              ? 'Today' 
+              : match.status?.toLowerCase().includes('next') || match.status?.toLowerCase().includes('tomorrow')
+              ? 'Next'
+              : format(new Date(match.date), 'MMM dd')}
+          </span>
+        )}
       </div>
 
       {/* Match Name */}
@@ -104,14 +126,26 @@ export default function MatchCard({ match }: MatchCardProps) {
         )}
       </div>
 
-      {/* Venue and Match Type */}
-      <div className="pt-2 border-t border-gray-200">
-        <p className="text-[10px] text-gray-600 mb-1 flex items-center truncate">
-          <span className="mr-1">📍</span>
-          <span className="truncate">{match.venue}</span>
-        </p>
+      {/* Venue, Time, Format, and Result */}
+      <div className="pt-2 border-t border-gray-200 space-y-1">
+        {match.venue && (
+          <p className="text-[10px] text-gray-600 flex items-center truncate">
+            <span className="mr-1">📍</span>
+            <span className="truncate">{match.venue}</span>
+          </p>
+        )}
         {match.matchType && (
-          <span className="text-[10px] text-gray-500 uppercase">{match.matchType}</span>
+          <div className="flex items-center">
+            <span className="text-[10px] text-gray-500 mr-1">Format:</span>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-700">
+              {match.matchType}
+            </span>
+          </div>
+        )}
+        {match.result && isCompleted && (
+          <p className="text-[10px] font-semibold text-green-700 bg-green-50 px-2 py-1 rounded">
+            {match.result}
+          </p>
         )}
       </div>
     </div>

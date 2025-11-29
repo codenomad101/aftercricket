@@ -11,19 +11,36 @@ export default function MatchSlider() {
 
   useEffect(() => {
     fetchMatches();
-    const interval = setInterval(fetchMatches, 60000); // Refresh every minute
+    // Real-time updates: Refresh every 30 seconds for live scores
+    const interval = setInterval(fetchMatches, 30000);
     return () => clearInterval(interval);
   }, []);
 
   const fetchMatches = async () => {
     try {
-      const response = await fetch('/api/cricket/live-scores');
+      // Use real-time endpoint for fresh data
+      const response = await fetch('/api/cricket/live-scores/realtime', {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+        },
+      });
       const data = await response.json();
       if (data.success) {
         setMatches(data.data.slice(0, 10)); // Limit to 10 matches for slider
       }
     } catch (error) {
       console.error('Error fetching matches:', error);
+      // Fallback to regular endpoint if real-time fails
+      try {
+        const fallbackResponse = await fetch('/api/cricket/live-scores');
+        const fallbackData = await fallbackResponse.json();
+        if (fallbackData.success) {
+          setMatches(fallbackData.data.slice(0, 10));
+        }
+      } catch (fallbackError) {
+        console.error('Fallback fetch also failed:', fallbackError);
+      }
     } finally {
       setLoading(false);
     }

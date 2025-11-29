@@ -24,6 +24,8 @@ export interface CricketMatch {
   hasSquad?: boolean;
   matchStarted?: boolean;
   matchEnded?: boolean;
+  result?: string; // e.g., "India won by 5 wickets", "Australia won by 42 runs"
+  matchTime?: string; // e.g., "2:30 PM", "Today 3:00 PM", "Tomorrow 10:00 AM"
 }
 
 export interface CricketApiResponse {

@@ -31,7 +31,7 @@ export default function Footer() {
           {/* Brand Section */}
           <div>
             <h3 className="text-2xl font-bold mb-2 font-papyrus">
-              afterCricket
+              AfterCricket
             </h3>
             <p className="text-sm text-red-100 mb-4">
               hype the game
@@ -120,7 +120,7 @@ export default function Footer() {
         <div className="border-t border-red-700 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-center items-center">
             <p className="text-sm text-gray-200">
-              © {currentYear} afterCricket.com. All rights reserved.
+              © {currentYear} AfterCricket.com. All rights reserved.
             </p>
           </div>
         </div>

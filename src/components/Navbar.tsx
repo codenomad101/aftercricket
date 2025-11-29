@@ -74,7 +74,7 @@ export default function Navbar() {
             href="/" 
             className="flex flex-col hover:opacity-90 transition-all duration-300 transform hover:scale-105"
           >
-            <span className="text-2xl font-bold font-papyrus">afterCricket</span>
+            <span className="text-4xl font-black font-papyrus italic">AfterCricket</span>
           </Link>
           
           {/* Desktop Navigation */}

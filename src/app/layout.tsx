@@ -8,7 +8,7 @@ import Footer from '@/components/Footer';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'afterCricket.com - Hype the Game',
+  title: 'AfterCricket.com - Hype the Game',
   description: 'Latest cricket news, live scores, and updates',
 };
 
