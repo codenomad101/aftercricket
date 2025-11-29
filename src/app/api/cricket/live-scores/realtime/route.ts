@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getLiveMatches } from '@/lib/cricket-api';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * Real-time endpoint that bypasses cache for fresh data
  * Use this endpoint for live score updates
@@ -9,8 +11,8 @@ export async function GET() {
   try {
     // Force refresh to get latest data
     const matches = await getLiveMatches(true);
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       data: matches,
       timestamp: new Date().toISOString(),
     });

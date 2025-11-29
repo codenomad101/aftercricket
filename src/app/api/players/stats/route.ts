@@ -3,6 +3,8 @@ import { db } from '@/lib/db';
 import { players, playerStats, teams } from '@/lib/db/schema';
 import { eq, and, or, sql } from 'drizzle-orm';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
