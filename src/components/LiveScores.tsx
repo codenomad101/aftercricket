@@ -82,7 +82,7 @@ export default function LiveScores() {
   return (
     <div className="mb-12">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-3xl font-bold text-dark-brown flex items-center">
+        <h2 className="text-2xl md:text-3xl font-bold text-dark-brown flex items-center">
           <span className="mr-3 animate-pulse">🔴</span>
           Live Cricket Scores
         </h2>
@@ -101,7 +101,7 @@ export default function LiveScores() {
                 return (
                   <div
                     key={match.id}
-                    className={`${colorClass} rounded-xl p-6 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 relative overflow-hidden`}
+                    className={`${colorClass} rounded-xl p-4 md:p-6 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 relative overflow-hidden`}
                   >
                     {/* Animated background pattern */}
                     <div className="absolute inset-0 opacity-10">
@@ -121,7 +121,7 @@ export default function LiveScores() {
                       </div>
 
                       {/* Match Name */}
-                      <h3 className="text-xl font-bold mb-2 line-clamp-2">
+                      <h3 className="text-lg md:text-xl font-bold mb-2 line-clamp-2">
                         {match.name}
                       </h3>
 

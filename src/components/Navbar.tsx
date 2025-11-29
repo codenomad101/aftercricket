@@ -346,8 +346,8 @@ export default function Navbar() {
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={`px-2 py-1 text-xs font-medium whitespace-nowrap transition-colors ${pathname === item.href
-                  ? 'text-red-700 font-semibold'
-                  : 'text-red-600 hover:text-red-700'
+                  ? 'text-white font-bold underline decoration-2 underline-offset-4'
+                  : 'text-white/90 hover:text-white'
                   }`}
               >
                 {item.label}

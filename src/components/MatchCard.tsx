@@ -44,7 +44,7 @@ export default function MatchCard({ match, showPrediction = false }: MatchCardPr
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-3 min-w-[240px] flex-shrink-0 border border-gray-200">
+    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-3 min-w-[200px] md:min-w-[240px] flex-shrink-0 border border-gray-200">
       {/* Time at Top */}
       {match.matchTime && (
         <div className="mb-2">
