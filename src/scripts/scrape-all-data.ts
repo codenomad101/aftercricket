@@ -6,16 +6,16 @@ require('dotenv').config({ path: require('path').join(process.cwd(), '.env.local
 import { db } from '../lib/db';
 import { teams, players, playerStats } from '../lib/db/schema';
 import { getTeamInfo, getPlayerInfo } from '../lib/wikipedia-scraper';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 
 const MAJOR_TEAMS = ['India', 'Australia', 'England', 'Pakistan', 'South Africa'];
 
 async function scrapeAndSaveTeam(teamName: string) {
   console.log(`\n📊 Scraping team: ${teamName}...`);
-  
+
   try {
     const teamInfo = await getTeamInfo(teamName);
-    
+
     // Save or update team
     const existingTeam = await db
       .select()
@@ -51,7 +51,7 @@ async function scrapeAndSaveTeam(teamName: string) {
     // Scrape players from playing 11
     if (teamInfo.playing11 && teamInfo.playing11.length > 0) {
       console.log(`\n👥 Found ${teamInfo.playing11.length} players in playing 11`);
-      
+
       for (const playerName of teamInfo.playing11) {
         await scrapeAndSavePlayer(playerName, teamId, true);
         // Add delay to avoid rate limiting
@@ -70,10 +70,10 @@ async function scrapeAndSaveTeam(teamName: string) {
 
 async function scrapeAndSavePlayer(playerName: string, teamId: number | null, isInPlaying11: boolean = false) {
   console.log(`  🔍 Scraping player: ${playerName}...`);
-  
+
   try {
     const playerInfo = await getPlayerInfo(playerName);
-    
+
     if (!playerInfo) {
       console.log(`  ⚠️  Could not find info for: ${playerName}`);
       return null;
@@ -109,8 +109,8 @@ async function scrapeAndSavePlayer(playerName: string, teamId: number | null, is
       console.log(`  ✅ Updated player: ${playerName} (ID: ${playerId})`);
     } else {
       // Create new player - truncate fullName if it's too long
-      const fullName = playerInfo.fullName && playerInfo.fullName.length > 1000 
-        ? playerInfo.fullName.substring(0, 1000) 
+      const fullName = playerInfo.fullName && playerInfo.fullName.length > 1000
+        ? playerInfo.fullName.substring(0, 1000)
         : playerInfo.fullName;
 
       const result = await db
@@ -142,8 +142,12 @@ async function scrapeAndSavePlayer(playerName: string, teamId: number | null, is
           const existingStats = await db
             .select()
             .from(playerStats)
-            .where(eq(playerStats.playerId, playerId))
-            .where(eq(playerStats.format, format.toUpperCase()))
+            .where(
+              and(
+                eq(playerStats.playerId, playerId),
+                eq(playerStats.format, format.toUpperCase())
+              )
+            )
             .limit(1);
 
           const statsData = {
@@ -200,14 +204,14 @@ async function scrapeAllData() {
     const teamId = await scrapeAndSaveTeam(teamName);
     if (teamId) {
       results.teams++;
-      
+
       // Count players for this team
       const teamPlayers = await db
         .select()
         .from(players)
         .where(eq(players.teamId, teamId));
       results.players += teamPlayers.length;
-      
+
       // Count stats
       for (const player of teamPlayers) {
         const playerStatsData = await db

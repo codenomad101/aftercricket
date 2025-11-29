@@ -4,7 +4,7 @@ import { authOptions } from '@/lib/auth';
 import { getPlayerInfo } from '@/lib/wikipedia-scraper';
 import { db } from '@/lib/db';
 import { players, playerStats, teams } from '@/lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 
 export async function POST(request: Request) {
   try {
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 
     // Scrape player info from Wikipedia
     const playerInfo = await getPlayerInfo(playerName);
-    
+
     if (!playerInfo) {
       return NextResponse.json(
         { success: false, error: 'Could not find player information' },
@@ -93,8 +93,12 @@ export async function POST(request: Request) {
           const existingStats = await db
             .select()
             .from(playerStats)
-            .where(eq(playerStats.playerId, playerId))
-            .where(eq(playerStats.format, format.toUpperCase()))
+            .where(
+              and(
+                eq(playerStats.playerId, playerId),
+                eq(playerStats.format, format.toUpperCase())
+              )
+            )
             .limit(1);
 
           if (existingStats.length > 0) {

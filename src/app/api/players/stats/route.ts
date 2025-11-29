@@ -12,7 +12,7 @@ export async function GET(request: Request) {
 
     // Build conditions
     const conditions = [];
-    
+
     // Format matching - try multiple variations
     const formatUpper = format.toUpperCase();
     conditions.push(
@@ -60,7 +60,8 @@ export async function GET(request: Request) {
       })
       .from(playerStats)
       .innerJoin(players, eq(playerStats.playerId, players.id))
-      .leftJoin(teams, eq(players.teamId, teams.id));
+      .leftJoin(teams, eq(players.teamId, teams.id))
+      .$dynamic();
 
     if (conditions.length > 0) {
       query = query.where(and(...conditions));

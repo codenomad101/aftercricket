@@ -23,7 +23,8 @@ export async function GET(request: Request) {
         },
       })
       .from(players)
-      .leftJoin(teams, eq(players.teamId, teams.id));
+      .leftJoin(teams, eq(players.teamId, teams.id))
+      .$dynamic();
 
     if (teamId) {
       query = query.where(eq(players.teamId, parseInt(teamId)));

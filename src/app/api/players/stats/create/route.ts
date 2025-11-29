@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { playerStats } from '@/lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 
@@ -37,8 +37,12 @@ export async function POST(request: Request) {
     const existing = await db
       .select()
       .from(playerStats)
-      .where(eq(playerStats.playerId, playerId))
-      .where(eq(playerStats.format, format.toUpperCase()))
+      .where(
+        and(
+          eq(playerStats.playerId, playerId),
+          eq(playerStats.format, format.toUpperCase())
+        )
+      )
       .limit(1);
 
     if (existing.length > 0) {

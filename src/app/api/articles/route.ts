@@ -40,13 +40,13 @@ export async function GET(request: Request) {
       })
       .from(articles)
       .leftJoin(categories, eq(articles.categoryId, categories.id))
-      .orderBy(desc(articles.createdAt));
+      .$dynamic();
 
     if (conditions.length > 0) {
       query = query.where(and(...conditions));
     }
 
-    const result = await query;
+    const result = await query.orderBy(desc(articles.createdAt));
 
     return NextResponse.json({ success: true, data: result });
   } catch (error) {
