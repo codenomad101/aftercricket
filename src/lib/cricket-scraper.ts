@@ -364,7 +364,7 @@ async function scrapeLiveScoresPage(): Promise<CricketMatch[]> {
         // Extract Match Info (Format, Venue)
         // Usually the first child div or text
         // Text: "2-day Warm-up Match • Canberra, Manuka Oval"
-        const infoText = $el.text();
+        const infoText = $el.children().eq(0).text();
 
         // Extract Teams and Scores
         // Structure: Prime Ministers XI PMXI 85-0

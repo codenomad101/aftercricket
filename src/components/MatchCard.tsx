@@ -173,7 +173,7 @@ export default function MatchCard({ match, showPrediction = false }: MatchCardPr
           </div>
         )}
         {match.result && isCompleted && (
-          <p className="text-[10px] font-semibold text-green-700 bg-green-50 px-2 py-1 rounded">
+          <p className="hidden md:block text-[10px] font-semibold text-green-700 bg-green-50 px-2 py-1 rounded">
             {match.result}
           </p>
         )}
