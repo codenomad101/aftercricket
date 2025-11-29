@@ -8,9 +8,10 @@ import PredictionBadge from './PredictionBadge';
 
 interface MatchCardProps {
   match: CricketMatch;
+  showPrediction?: boolean;
 }
 
-export default function MatchCard({ match }: MatchCardProps) {
+export default function MatchCard({ match, showPrediction = false }: MatchCardProps) {
   const isLive = match.status?.toLowerCase().includes('live') || match.matchStarted;
   const isCompleted = match.matchEnded || match.status?.toLowerCase().includes('won') || match.status?.toLowerCase().includes('won by');
 
@@ -63,10 +64,10 @@ export default function MatchCard({ match }: MatchCardProps) {
         <div className="flex items-center gap-1.5">
           <span
             className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${isLive
-                ? 'bg-red-500 text-white animate-pulse'
-                : isCompleted
-                  ? 'bg-green-500 text-white'
-                  : 'bg-yellow-500 text-white'
+              ? 'bg-red-500 text-white animate-pulse'
+              : isCompleted
+                ? 'bg-green-500 text-white'
+                : 'bg-yellow-500 text-white'
               }`}
           >
             {match.status || 'Upcoming'}
@@ -178,7 +179,7 @@ export default function MatchCard({ match }: MatchCardProps) {
         )}
 
         {/* AI Prediction */}
-        {!isCompleted && (
+        {!isCompleted && showPrediction && (
           <div className="mt-2 pt-2 border-t border-gray-100">
             {prediction ? (
               <PredictionBadge prediction={prediction} />

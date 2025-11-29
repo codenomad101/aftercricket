@@ -87,15 +87,43 @@ export async function getLiveMatches(forceRefresh: boolean = false): Promise<Cri
   }
 
   try {
-    // Option 1: Scrape Cricbuzz homepage top section (primary source)
+    let allMatches: CricketMatch[] = [];
+
+    // 1. Get Live Scores (High Priority for scores)
     try {
-      const matches = await scrapeCricbuzzMatches();
-      if (matches.length > 0) {
-        await setCachedData(cacheKey, JSON.stringify(matches), undefined);
-        return matches;
+      const liveMatches = await scrapeLiveScoresPage();
+      if (liveMatches.length > 0) {
+        allMatches = [...liveMatches];
       }
-    } catch (cricbuzzError) {
-      console.log('Cricbuzz scraping failed, trying CricTracker...', cricbuzzError);
+    } catch (e) {
+      console.log('Live scores scraping failed:', e);
+    }
+
+    // 2. Get Homepage Matches (For Schedule/Upcoming)
+    try {
+      const homeMatches = await scrapeCricbuzzMatches();
+
+      // Merge: Add matches from homepage that aren't in live scores
+      for (const homeMatch of homeMatches) {
+        // Check if this match is already in allMatches (by loose name matching)
+        const isDuplicate = allMatches.some(m => {
+          // Normalize names for comparison
+          const mName = m.name.toLowerCase().replace(/\s+/g, '');
+          const hName = homeMatch.name.toLowerCase().replace(/\s+/g, '');
+          return mName.includes(hName) || hName.includes(mName);
+        });
+
+        if (!isDuplicate) {
+          allMatches.push(homeMatch);
+        }
+      }
+    } catch (e) {
+      console.log('Homepage scraping failed:', e);
+    }
+
+    if (allMatches.length > 0) {
+      await setCachedData(cacheKey, JSON.stringify(allMatches), undefined);
+      return allMatches;
     }
 
     // Option 2: Fallback to CricTracker (uses Puppeteer for JS)
@@ -295,6 +323,128 @@ async function scrapeCricbuzzFromJson(html: string): Promise<CricketMatch[]> {
     return matches;
   } catch (error) {
     console.error('Error extracting from JSON:', error);
+    return [];
+  }
+}
+
+/**
+ * Scrape the dedicated Live Scores page
+ * https://www.cricbuzz.com/cricket-match/live-scores
+ */
+async function scrapeLiveScoresPage(): Promise<CricketMatch[]> {
+  try {
+    console.log('Scraping Cricbuzz Live Scores page...');
+    const response = await fetch('https://www.cricbuzz.com/cricket-match/live-scores', {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const html = await response.text();
+    const $ = cheerio.load(html);
+    const matches: CricketMatch[] = [];
+
+    // The live scores page uses <a> tags as match containers
+    // Selector based on hierarchy analysis: A.w-full bg-cbWhite flex flex-col p-3 gap-1
+    const matchContainers = $('a[class*="bg-cbWhite"][class*="flex"][class*="flex-col"][class*="p-3"]');
+
+    console.log(`Found ${matchContainers.length} match containers on Live Scores page`);
+
+    matchContainers.each((index, element) => {
+      try {
+        const $el = $(element);
+        const matchLink = $el.attr('href') || '';
+
+        // Extract Match Info (Format, Venue)
+        // Usually the first child div or text
+        // Text: "2-day Warm-up Match • Canberra, Manuka Oval"
+        const infoText = $el.text();
+
+        // Extract Teams and Scores
+        // Structure: Prime Ministers XI PMXI 85-0
+        const teamRows = $el.find('div.flex.items-center.gap-4.justify-between');
+        const teams: string[] = [];
+        const scores: { r: number, w: number, o: number, inning: string }[] = [];
+
+        teamRows.each((i, row) => {
+          const $row = $(row);
+
+          // Child 0: Team Name Container
+          const teamContainer = $row.children().eq(0);
+          // Try to get the full name (hidden wb:block) or just the first span
+          let teamName = teamContainer.find('span.hidden.wb\\:block').text().trim();
+          if (!teamName) {
+            teamName = teamContainer.find('span').first().text().trim();
+          }
+          // Fallback: just get text of container
+          if (!teamName) {
+            teamName = teamContainer.text().trim();
+          }
+
+          if (teamName) teams.push(teamName);
+
+          // Child 1: Score Container (Span)
+          const scoreText = $row.children().eq(1).text().trim();
+
+          // Parse score: "85-0" or "85-0 (20)"
+          if (scoreText) {
+            const scoreMatch = scoreText.match(/(\d+)[/-](\d+)(?:\s*\((\d+(?:\.\d+)?)\))?/);
+            if (scoreMatch) {
+              scores.push({
+                r: parseInt(scoreMatch[1]),
+                w: parseInt(scoreMatch[2]),
+                o: scoreMatch[3] ? parseFloat(scoreMatch[3]) : 0,
+                inning: teamName
+              });
+            }
+          }
+        });
+
+        // If teams not found via rows, try parsing the full text
+        if (teams.length < 2) {
+          // Fallback parsing logic
+          // ...
+        }
+
+        // Extract Status
+        // Usually the last element or distinct style
+        const status = $el.find('div.text-xs.text-cbTxtSec, div[class*="text-cbTxtSec"]').last().text().trim() || 'Live';
+
+        // Extract Format from info text
+        let matchType = 'ODI';
+        if (infoText.includes('T20')) matchType = 'T20I';
+        else if (infoText.includes('Test')) matchType = 'Test';
+
+        const matchId = matchLink ? matchLink.split('/').filter(Boolean).pop() || `match-${index}` : `match-${index}-${Date.now()}`;
+
+        matches.push({
+          id: matchId,
+          name: teams.join(' vs ') || 'Unknown Match',
+          matchType,
+          status,
+          venue: infoText.split('•')[1]?.trim() || '',
+          date: new Date().toISOString(),
+          dateTimeGMT: new Date().toISOString(),
+          teams: teams,
+          score: scores,
+          matchStarted: true,
+          matchEnded: status.toLowerCase().includes('won') || status.toLowerCase().includes('draw'),
+        });
+
+      } catch (err) {
+        console.error('Error parsing match on live scores page:', err);
+      }
+    });
+
+    return matches;
+  } catch (error) {
+    console.error('Error scraping live scores page:', error);
     return [];
   }
 }

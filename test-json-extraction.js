@@ -36,12 +36,23 @@ while ((matchData = matchPattern.exec(html)) !== null) {
 
     // Look for timing
     const matchIndex = matchPattern.lastIndex;
-    const searchWindow = html.substring(Math.max(0, matchIndex - 1000), matchIndex + 1000);
+    const searchWindow = html.substring(Math.max(0, matchIndex - 200), matchIndex + 200);
+
+    console.log('  Context:', searchWindow.substring(0, 150) + '...');
+
     const timePattern = /(Today|Tomorrow|Mon|Tue|Wed|Thu|Fri|Sat|Sun)[^"]*?(\d{1,2}:\d{2}\s*(?:AM|PM))[^"]*?GMT/i;
     const timeMatch = searchWindow.match(timePattern);
 
     if (timeMatch) {
         console.log(`  Time: ${timeMatch[1]} • ${timeMatch[2]}`);
+    }
+
+    // Look for score pattern in the window
+    // Patterns: "123-4", "123/4", "123", "123/4 (20)"
+    const scorePattern = /(\d{1,3}[/-]\d{1,2}(?:\s*\(\d{1,3}(?:\.\d)?\))?)/;
+    const scoreMatch = searchWindow.match(scorePattern);
+    if (scoreMatch) {
+        console.log(`  Possible Score: ${scoreMatch[1]}`);
     }
 
     console.log('');
