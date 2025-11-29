@@ -44,7 +44,7 @@ export default function MatchCard({ match, showPrediction = false }: MatchCardPr
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-3 min-w-[200px] md:min-w-[240px] flex-shrink-0 border border-gray-200">
+    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-1.5 md:p-3 min-w-[140px] md:min-w-[240px] flex-shrink-0 border border-gray-200">
       {/* Time at Top */}
       {match.matchTime && (
         <div className="mb-2">
@@ -85,7 +85,7 @@ export default function MatchCard({ match, showPrediction = false }: MatchCardPr
       </div>
 
       {/* Match Name */}
-      <h3 className="text-sm font-semibold text-gray-900 mb-2 line-clamp-2 leading-tight">
+      <h3 className="text-xs md:text-sm font-semibold text-gray-900 mb-2 line-clamp-2 leading-tight">
         {match.name}
       </h3>
 
@@ -110,12 +110,12 @@ export default function MatchCard({ match, showPrediction = false }: MatchCardPr
                   {match.teams[0].charAt(0).toUpperCase()}
                 </div>
               )}
-              <span className="text-xs font-medium text-gray-900 truncate max-w-[100px]">{match.teams[0]}</span>
+              <span className="text-[10px] md:text-xs font-medium text-gray-900 truncate max-w-[80px] md:max-w-[100px]">{match.teams[0]}</span>
             </div>
             {match.score && match.score[0] && (
-              <span className="text-xs font-bold text-gray-900">
+              <span className="text-[10px] md:text-xs font-bold text-gray-900">
                 {match.score[0].r}/{match.score[0].w}
-                <span className="text-[10px] ml-0.5 text-gray-600">
+                <span className="text-[9px] md:text-[10px] ml-0.5 text-gray-600">
                   ({match.score[0].o})
                 </span>
               </span>
@@ -142,12 +142,12 @@ export default function MatchCard({ match, showPrediction = false }: MatchCardPr
                   {match.teams[1].charAt(0).toUpperCase()}
                 </div>
               )}
-              <span className="text-xs font-medium text-gray-900 truncate max-w-[100px]">{match.teams[1]}</span>
+              <span className="text-[10px] md:text-xs font-medium text-gray-900 truncate max-w-[80px] md:max-w-[100px]">{match.teams[1]}</span>
             </div>
             {match.score && match.score[1] && (
-              <span className="text-xs font-bold text-gray-900">
+              <span className="text-[10px] md:text-xs font-bold text-gray-900">
                 {match.score[1].r}/{match.score[1].w}
-                <span className="text-[10px] ml-0.5 text-gray-600">
+                <span className="text-[9px] md:text-[10px] ml-0.5 text-gray-600">
                   ({match.score[1].o})
                 </span>
               </span>
@@ -159,15 +159,15 @@ export default function MatchCard({ match, showPrediction = false }: MatchCardPr
       {/* Venue, Time, Format, and Result */}
       <div className="pt-2 border-t border-gray-200 space-y-1">
         {match.venue && (
-          <p className="text-[10px] text-gray-600 flex items-center truncate">
+          <p className="text-[9px] md:text-[10px] text-gray-600 flex items-center truncate">
             <span className="mr-1">📍</span>
             <span className="truncate">{match.venue}</span>
           </p>
         )}
         {match.matchType && (
           <div className="flex items-center">
-            <span className="text-[10px] text-gray-500 mr-1">Format:</span>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-700">
+            <span className="text-[9px] md:text-[10px] text-gray-500 mr-1">Format:</span>
+            <span className="px-2 py-0.5 rounded-full text-[9px] md:text-[10px] font-semibold bg-blue-100 text-blue-700">
               {match.matchType}
             </span>
           </div>

@@ -101,7 +101,7 @@ export default function LiveScores() {
                 return (
                   <div
                     key={match.id}
-                    className={`${colorClass} rounded-xl p-4 md:p-6 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 relative overflow-hidden`}
+                    className={`${colorClass} rounded-xl p-3 md:p-6 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 relative overflow-hidden`}
                   >
                     {/* Animated background pattern */}
                     <div className="absolute inset-0 opacity-10">
@@ -121,12 +121,12 @@ export default function LiveScores() {
                       </div>
 
                       {/* Match Name */}
-                      <h3 className="text-lg md:text-xl font-bold mb-2 line-clamp-2">
+                      <h3 className="text-base md:text-xl font-bold mb-2 line-clamp-2">
                         {match.name}
                       </h3>
 
                       {/* Venue */}
-                      <p className="text-sm opacity-90 mb-4 flex items-center">
+                      <p className="text-xs md:text-sm opacity-90 mb-4 flex items-center">
                         <span className="mr-2">📍</span>
                         {match.venue}
                       </p>
@@ -136,11 +136,11 @@ export default function LiveScores() {
                         {match.teams && match.teams[0] && (
                           <div className="bg-white bg-opacity-20 rounded-lg p-3 backdrop-blur-sm">
                             <div className="flex justify-between items-center">
-                              <span className="font-semibold">{match.teams[0]}</span>
+                              <span className="font-semibold text-sm md:text-base">{match.teams[0]}</span>
                               {match.score && match.score[0] && (
-                                <span className="text-lg font-bold">
+                                <span className="text-sm md:text-lg font-bold">
                                   {match.score[0].r}/{match.score[0].w}
-                                  <span className="text-sm ml-1">
+                                  <span className="text-xs md:text-sm ml-1">
                                     ({match.score[0].o} ov)
                                   </span>
                                 </span>
@@ -152,11 +152,11 @@ export default function LiveScores() {
                         {match.teams && match.teams[1] && (
                           <div className="bg-white bg-opacity-20 rounded-lg p-3 backdrop-blur-sm">
                             <div className="flex justify-between items-center">
-                              <span className="font-semibold">{match.teams[1]}</span>
+                              <span className="font-semibold text-sm md:text-base">{match.teams[1]}</span>
                               {match.score && match.score[1] && (
-                                <span className="text-lg font-bold">
+                                <span className="text-sm md:text-lg font-bold">
                                   {match.score[1].r}/{match.score[1].w}
-                                  <span className="text-sm ml-1">
+                                  <span className="text-xs md:text-sm ml-1">
                                     ({match.score[1].o} ov)
                                   </span>
                                 </span>

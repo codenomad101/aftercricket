@@ -18,11 +18,11 @@ export default function NewsCard({ article }: NewsCardProps) {
   return (
     <div
       onClick={handleClick}
-      className="group bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-4 h-full transform hover:-translate-y-1 border border-gray-100 overflow-hidden relative cursor-pointer"
+      className="group bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-3 md:p-4 h-full transform hover:-translate-y-1 border border-gray-100 overflow-hidden relative cursor-pointer"
     >
       {/* Gradient overlay on hover */}
       <div className="absolute inset-0 bg-gradient-to-br from-red-50/0 to-red-100/0 group-hover:from-red-50/10 group-hover:to-red-100/10 transition-all duration-300 pointer-events-none"></div>
-      
+
       <div className="relative z-10">
         {article.imageUrl && (
           <div className="mb-3 -mx-4 -mt-4">
@@ -39,11 +39,11 @@ export default function NewsCard({ article }: NewsCardProps) {
             {article.category.name}
           </span>
         )}
-        <h2 className="text-base font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors duration-300 leading-tight">
+        <h2 className="text-sm md:text-base font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors duration-300 leading-tight">
           {article.title}
         </h2>
         {article.excerpt && (
-          <p className="text-xs text-gray-600 mb-3 line-clamp-2 leading-relaxed">
+          <p className="text-[10px] md:text-xs text-gray-600 mb-3 line-clamp-2 leading-relaxed">
             {article.excerpt}
           </p>
         )}

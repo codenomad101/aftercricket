@@ -71,7 +71,7 @@ export default function NewsSliderSmall() {
   return (
     <div className="mb-6">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-xl font-bold text-gray-900">Latest News</h2>
+        <h2 className="text-lg md:text-xl font-bold text-gray-900">Latest News</h2>
         <div className="flex gap-1.5">
           <button
             onClick={scrollLeft}
@@ -102,18 +102,18 @@ export default function NewsSliderSmall() {
           <div
             key={article.id}
             onClick={() => handleClick(article.slug)}
-            className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-3 min-w-[280px] flex-shrink-0 border border-gray-200 cursor-pointer"
+            className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-3 min-w-[200px] md:min-w-[280px] flex-shrink-0 border border-gray-200 cursor-pointer"
           >
             {article.category && (
               <span className="inline-block bg-red-600 text-white px-2 py-0.5 rounded-full text-[10px] font-semibold mb-2">
                 {article.category.name}
               </span>
             )}
-            <h3 className="text-sm font-semibold text-gray-900 mb-2 line-clamp-2 leading-tight">
+            <h3 className="text-xs md:text-sm font-semibold text-gray-900 mb-2 line-clamp-2 leading-tight">
               {article.title}
             </h3>
             {article.excerpt && (
-              <p className="text-xs text-gray-600 mb-2 line-clamp-2">
+              <p className="text-[10px] md:text-xs text-gray-600 mb-2 line-clamp-2">
                 {article.excerpt}
               </p>
             )}

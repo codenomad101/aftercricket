@@ -23,7 +23,7 @@ export default function NewsSlider({ title, filterBy }: NewsSliderProps) {
       const data = await response.json();
       if (data.success) {
         let filteredArticles = data.data;
-        
+
         // Filter by India or other countries based on category or title
         if (filterBy === 'india') {
           filteredArticles = data.data.filter((article: Article) => {
@@ -31,10 +31,10 @@ export default function NewsSlider({ title, filterBy }: NewsSliderProps) {
             const categoryName = article.category?.name?.toLowerCase() || '';
             const categorySlug = article.category?.slug?.toLowerCase() || '';
             // Check if category is "India" or title contains "india"/"indian"
-            return categoryName === 'india' || 
-                   categorySlug === 'india' ||
-                   title.includes('india') || 
-                   title.includes('indian');
+            return categoryName === 'india' ||
+              categorySlug === 'india' ||
+              title.includes('india') ||
+              title.includes('indian');
           });
         } else if (filterBy === 'other') {
           filteredArticles = data.data.filter((article: Article) => {
@@ -42,13 +42,13 @@ export default function NewsSlider({ title, filterBy }: NewsSliderProps) {
             const categoryName = article.category?.name?.toLowerCase() || '';
             const categorySlug = article.category?.slug?.toLowerCase() || '';
             // Exclude India category and articles with "india"/"indian" in title
-            return categoryName !== 'india' && 
-                   categorySlug !== 'india' &&
-                   !title.includes('india') && 
-                   !title.includes('indian');
+            return categoryName !== 'india' &&
+              categorySlug !== 'india' &&
+              !title.includes('india') &&
+              !title.includes('indian');
           });
         }
-        
+
         setArticles(filteredArticles.slice(0, 6)); // Limit to 6 articles
       }
     } catch (error) {
@@ -90,7 +90,7 @@ export default function NewsSlider({ title, filterBy }: NewsSliderProps) {
 
   return (
     <div className="mb-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">{title}</h2>
+      <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">{title}</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {articles.map((article) => (
           <NewsCard key={article.id} article={article} />

@@ -75,7 +75,7 @@ export default function Navbar() {
           >
             <div className="flex items-baseline gap-2">
               <span className="text-4xl font-bold font-papyrus text-white drop-shadow-lg">afterCricket</span>
-              <span className="text-xs font-light italic text-red-100 tracking-wider">get after the game</span>
+              <span className="hidden md:inline text-xs font-light italic text-red-100 tracking-wider">get after the game</span>
             </div>
             <div className="absolute -bottom-1 left-0 w-0 h-1 bg-white transition-all duration-300 group-hover:w-full rounded-full"></div>
           </Link>

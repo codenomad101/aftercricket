@@ -12,7 +12,7 @@ export default function Home() {
         {/* Match Slider Section */}
         <div className="mb-12 animate-fadeIn">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-4xl font-black text-gray-800 font-papyrus">
+            <h2 className="text-2xl md:text-4xl font-black text-gray-800 font-papyrus">
               🔥 Live Cricket Action
             </h2>
           </div>
@@ -22,7 +22,7 @@ export default function Home() {
         {/* Featured Content Section */}
         <div className="mb-8 bg-gradient-to-r from-purple-100 to-pink-100 rounded-3xl p-4 shadow-lg">
           <div className="text-center mb-4">
-            <h2 className="text-2xl font-black text-gray-800 mb-2 font-papyrus">
+            <h2 className="text-lg md:text-2xl font-black text-gray-800 mb-2 font-papyrus">
               ⚡ Featured Content
             </h2>
             <p className="text-sm text-gray-700">
@@ -39,7 +39,7 @@ export default function Home() {
             <div className="flex items-center mb-6">
               <div className="text-4xl mr-4">🇮🇳</div>
               <div>
-                <h2 className="text-3xl font-black text-gray-800 font-papyrus">
+                <h2 className="text-xl md:text-3xl font-black text-gray-800 font-papyrus">
                   India Cricket News
                 </h2>
                 <p className="text-gray-600">Latest updates from Indian cricket</p>
@@ -53,7 +53,7 @@ export default function Home() {
             <div className="flex items-center mb-6">
               <div className="text-4xl mr-4">🌍</div>
               <div>
-                <h2 className="text-3xl font-black text-gray-800 font-papyrus">
+                <h2 className="text-xl md:text-3xl font-black text-gray-800 font-papyrus">
                   International Cricket News
                 </h2>
                 <p className="text-gray-600">Cricket news from around the world</p>
@@ -66,7 +66,7 @@ export default function Home() {
         {/* Call to Action Section */}
         <div className="mt-16 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white rounded-3xl p-12 shadow-2xl">
           <div className="text-center">
-            <h2 className="text-4xl font-black mb-4 font-papyrus">
+            <h2 className="text-2xl md:text-4xl font-black mb-4 font-papyrus">
               Never Miss a Moment!
             </h2>
             <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
